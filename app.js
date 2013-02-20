@@ -8,18 +8,8 @@ var express = require('express')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
-  //, pg = require('pg')
-  // specify the connection path for pg
-  //, conString = "tcp://richardtai:5342@localhost/meliorate_db";
-
-//var client = new pg.Client(conString);
-//client.connect();
-
-//create the projects table
-//client.query("CREATE TABLE IF NOT EXISTS Users (name VARCHAR(255), password VARCHAR(255), overall_goals TEXT, id   SERIAL , createdAt TIMESTAMP NOT NULL, updatedAt TIMESTAMP NOT NULL, PRIMARY KEY (id));");
-
+ 
 var app = express();
-
 
 var Sequelize = require('sequelize'),
     sequelize = new Sequelize ('meliorate_db', 'richardtai', null, {
@@ -32,15 +22,13 @@ var Sequelize = require('sequelize'),
 });
 
 var User = sequelize.define('Users', {
-  name: Sequelize.STRING,
+  first_name: Sequelize.STRING,
+  last_name: Sequelize.STRING,
+  email: Sequelize.STRING,
   password: Sequelize.STRING
 });
 
 sequelize.sync();
-
-function test() {
-  console.log("Yay!");
-}
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
@@ -60,7 +48,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-//app.get('/test', test.foobar);
+
+app.post('/', routes.post_handler);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
