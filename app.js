@@ -19,6 +19,10 @@ app.configure(function(){
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
+  // included because the ninja-store example had it
+  // also because this is what allows the req.session.email
+  app.use(express.cookieParser('your secret here'));
+  app.use(express.session());
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));

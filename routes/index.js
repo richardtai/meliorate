@@ -14,20 +14,31 @@ var User = sequelize.define('Users', {
   email: Sequelize.STRING,
   password: Sequelize.STRING
 });
+
 /*
  * GET home page.
  */
 
 exports.index = function(req, res) {
-  res.render('index', {title: "Meliorate"});
+  // if user hasn't logged in/signed up
+  if (typeof req.session.email == 'undefined') {
+    res.render('index', {title: "Meliorate"});
+  } else {
+    res.render('home');
+  }
 };
 
 exports.post_handler = function(req, res) {
+  // create a user with the values the user put in
   User.create({
     first_name: req.body.firstname,
     last_name: req.body.lastname,
     email: req.body.email,
     password: req.body.password
-  })  
-  res.send("Yay!");
+  });  
+  email = req.body.email;
+  // set the session to the user's session
+  req.session.email = email;
+  // redirect them back home
+  res.redirect('/');
 };
