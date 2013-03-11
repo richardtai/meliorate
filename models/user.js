@@ -6,7 +6,11 @@ var User = db.sequelize.define('Users', {
   first_name: db.Sequelize.STRING,
   last_name: db.Sequelize.STRING,
   email: db.Sequelize.STRING,
-  password: db.Sequelize.STRING
+  password: db.Sequelize.STRING,
+  new_user: {
+    type: db.Sequelize.BOOLEAN,
+    defaultValue: true
+  },
 });
 
 // Export the 'User' so that it can be access by the instance initiated.

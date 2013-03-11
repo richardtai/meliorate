@@ -24,7 +24,11 @@ exports.index = function(req, res) {
   if (typeof req.session.email == 'undefined') {
     res.render('index', {title: "Meliorate"});
   } else {
-    res.render('home');
+    user_email = req.session.email;
+    // find user via session email and then render the home page
+    get_user(user_email, function(curr_user) {
+      res.render('home', {title: "Meliorate", user: curr_user});
+    });
   }
 };
 
@@ -34,7 +38,7 @@ exports.post_handler = function(req, res) {
     first_name: req.body.firstname,
     last_name: req.body.lastname,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
   });  
   email = req.body.email;
   // set the session to the user's session
@@ -42,3 +46,21 @@ exports.post_handler = function(req, res) {
   // redirect them back home
   res.redirect('/');
 };
+
+exports.post_login_handler = function(req, res) {
+  user_email = req.body.email;
+  user_password = req.body.password;
+}
+
+
+var get_user = function(user_email, callback) {
+  // find the user in the database
+  User.find({
+    where:{email: user_email}
+  }).success(function(user) {
+    // if found, data is stored in 'user', and we then call our callback function
+    if (callback && typeof(callback) === "function") {
+      callback(user);
+    }
+  });
+}

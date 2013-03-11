@@ -12,15 +12,15 @@ block content
         div.signup-info-wrapper
           form(method="post")
             h3 Sign up for Meliorate!
-            input(type="text", placeholder="First Name", name="firstname")
+            input(type="text", placeholder="First Name", name="firstname", value="Test")
             br
-            input(type="text", placeholder="Last Name", name="lastname")
+            input(type="text", placeholder="Last Name", name="lastname", value="User")
             br
-            input(type="text", placeholder="Email", name="email")
+            input(type="text", placeholder="Email", name="email", value="tu@gmail.com", autofocus="autofocus")
             br
-            input(type="password", placeholder="Password", name="password")
+            input(type="password", placeholder="Password", name="password", value="foobar")
             br
             input.btn(type="submit", value="Sign Up!")
           h6 Already have an account? 
-            a('href=#') Log in!
+            a('href=/login') Log in!
 

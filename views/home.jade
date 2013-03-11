@@ -1,1 +1,8 @@
-p Hello, world!
+extends layout
+
+block content
+  - if (user.new_user == true)
+    p Hi #{user.first_name}!
+      p We see that it's your first time here, let's get you started!
+  - else
+    p Welcome back #{user.first_name}!
