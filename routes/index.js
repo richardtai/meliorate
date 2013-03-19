@@ -24,6 +24,12 @@ var OverallGoal = sequelize.define('OverallGoal', {
   isCompleted: Sequelize.BOOLEAN
 });
 
+User.hasMany(OverallGoal);
+
+// Global variables
+
+var user, overall_goal, mn_bool, og_bool;
+
 /*
  * GET home page.
  */
@@ -36,6 +42,9 @@ exports.index = function(req, res) {
     user_email = req.session.email;
     // find user via session email and then render the home page
     get_user(user_email, function(curr_user) {
+      user = curr_user;
+      mn_bool = false;
+      og_bool = false;
       res.render('home', {title: "Meliorate", user: curr_user});
     });
   }
@@ -82,18 +91,55 @@ exports.new_overall_goal = function(req, res) {
 }
 
 exports.post_overall_goal_handler = function(req, res) {
-  user_email = req.session.email;
-  get_user(user_email, function(curr_user) {
-    console.log(curr_user);
+  console.log("OG-Bool: " + og_bool);
+  console.log("MN-Bool: "+ mn_bool);
+
+  // post handler for adding an overall goal
+  // if og_bool is false, that means we have not set an overall goal yet
+  if((mn_bool == false) && (og_bool == false)) {
+    //set overall goal to true
+    og_bool = true;
+    console.log("Adding overall goal.");
+    // create the overall goal that the user input 
     OverallGoal.create({
       description: req.body.overall_goal_description,
-      isCompleted: false
+      isCompleted: false,
+      // upon success, add the overall goal to the user
     }).success(function(og_goal){
-      console.log(og_goal);
-      user.addOverallGoals([og_goal]).success(function() {
-        console.log("Yay!");
-      });
-    });
-    res.send("Goal added!");
-  });
+      user.addOverallGoal(og_goal).success(function() {
+        overall_goal = og_goal;
+        res.render('new_monthly_goal', {title: "Meliorate", months_needed_bool: mn_bool});
+      }); // corresponds to the adding OverallGoal's success function
+    }); // corresopnds to OverallGoal's success function
+  }
+
+  //post handler for determining how many months are needed to achieve the overall goal
+  else if((mn_bool == false) && (og_bool == true)) {
+    num_months = parseInt(req.body.months_needed);
+    console.log(num_months);
+    mn_bool = true;
+    res.render('new_monthly_goal', {title: "Meliorate", months_needed_bool: mn_bool, num_months: num_months});
+  }
+
+  else if((mn_bool == true) && (og_bool == true)) {
+    
+  }
 }
+
+/*
+* Add new monthly goals
+*/
+/*
+exports.new_monthly_goal = function(req, res) {
+  res.render('new_overall_goal', {title: "Meliorate"});
+}
+
+exports.post_new_monthly_goal_handler = function(req, res) {
+  if(months_needed == false) {
+    months_needed = true;
+    num_months = req.body.months_needed;
+    console.log(months_needed);
+    console.log(req.body);
+    res.render('new_monthly_goal', {title: "Meliorate", months_needed_bool: months_needed, num_months: num_months});
+  }
+}*/
