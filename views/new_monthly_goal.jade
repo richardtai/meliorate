@@ -17,6 +17,6 @@ block content
     form(method="post")
       - for (j=1; j < (num_months + 1); j++) {
           p Enter your monthly goal for month #{j}
-          input(type="text", name='month-#{j}')
+          input(type="text", name='month#{j}', value='Goal #{j}')
       - }
       input.btn(type="submit", value="Enter")

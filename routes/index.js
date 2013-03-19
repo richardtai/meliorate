@@ -24,11 +24,17 @@ var OverallGoal = sequelize.define('OverallGoal', {
   isCompleted: Sequelize.BOOLEAN
 });
 
+var MonthlyGoal = sequelize.define('MonthlyGoal', {
+  description: Sequelize.STRING,
+  isCompleted: Sequelize.BOOLEAN
+});
+
 User.hasMany(OverallGoal);
+OverallGoal.hasMany(MonthlyGoal);
 
 // Global variables
 
-var user, overall_goal, mn_bool, og_bool;
+var user, overall_goal, mn_bool, og_bool, num_months;
 
 /*
  * GET home page.
@@ -91,15 +97,12 @@ exports.new_overall_goal = function(req, res) {
 }
 
 exports.post_overall_goal_handler = function(req, res) {
-  console.log("OG-Bool: " + og_bool);
-  console.log("MN-Bool: "+ mn_bool);
 
   // post handler for adding an overall goal
   // if og_bool is false, that means we have not set an overall goal yet
   if((mn_bool == false) && (og_bool == false)) {
     //set overall goal to true
     og_bool = true;
-    console.log("Adding overall goal.");
     // create the overall goal that the user input 
     OverallGoal.create({
       description: req.body.overall_goal_description,
@@ -122,25 +125,20 @@ exports.post_overall_goal_handler = function(req, res) {
     res.render('new_monthly_goal', {title: "Meliorate", months_needed_bool: mn_bool, num_months: num_months});
   }
 
+  // post handler for storing the monthly goals
   else if((mn_bool == true) && (og_bool == true)) {
-    
-  }
-}
-
-/*
-* Add new monthly goals
-*/
-/*
-exports.new_monthly_goal = function(req, res) {
-  res.render('new_overall_goal', {title: "Meliorate"});
-}
-
-exports.post_new_monthly_goal_handler = function(req, res) {
-  if(months_needed == false) {
-    months_needed = true;
-    num_months = req.body.months_needed;
-    console.log(months_needed);
     console.log(req.body);
-    res.render('new_monthly_goal', {title: "Meliorate", months_needed_bool: months_needed, num_months: num_months});
+    monthly_goal_array = req.body;
+
+    for (key in req.body) {
+      console.log(req.body[key]);
+      MonthlyGoal.create({
+        description: req.body[key],
+        isCompleted: false
+      }).success(function(mg_goal) {
+        overall_goal.addMonthlyGoal(mg_goal);
+      });
+    }
+    res.render('new_weekly_goal', {title: "Meliorate"});
   }
-}*/
+}
