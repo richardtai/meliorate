@@ -21,6 +21,5 @@ mg.MonthlyGoal.hasMany(wg.WeeklyGoal);
 og.OverallGoal.hasMany(mg.MonthlyGoal);
 u.User.hasMany(og.OverallGoal);
 
-
 // Sync the database.
 s.sequelize.sync();

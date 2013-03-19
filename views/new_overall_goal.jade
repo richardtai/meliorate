@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  p First, let's start things off by defining an overall goal.
+  form(method="post")
+    input(type="text", placeholder="Ex: I want to start a company.", name="overall_goal_description")
+    br
+    input.btn(type="submit", value="Create Goal!")

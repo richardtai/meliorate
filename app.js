@@ -34,9 +34,11 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.get('/new_overall_goal', routes.new_overall_goal);
 
 app.post('/', routes.post_handler);
 app.post('/login', routes.post_login_handler);
+app.post('/new_overall_goal', routes.post_overall_goal_handler);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

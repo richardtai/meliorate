@@ -4,5 +4,6 @@ block content
   - if (user.new_user == true)
     p Hi #{user.first_name}!
       p We see that it's your first time here, let's get you started!
+      a('href=/new_overall_goal') Create a new goal!
   - else
     p Welcome back #{user.first_name}!

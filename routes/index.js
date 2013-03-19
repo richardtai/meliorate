@@ -8,11 +8,20 @@ var Sequelize = require('sequelize'),
       port: '5432'
 });
 
+/*
+* Temporarily define the models here so that I can reference them and add them to the database.
+* I'll figure out how to organize this neatly after.
+*/
 var User = sequelize.define('Users', {
   first_name: Sequelize.STRING,
   last_name: Sequelize.STRING,
   email: Sequelize.STRING,
   password: Sequelize.STRING
+});
+
+var OverallGoal = sequelize.define('OverallGoal', {
+  description: Sequelize.STRING,
+  isCompleted: Sequelize.BOOLEAN
 });
 
 /*
@@ -52,7 +61,6 @@ exports.post_login_handler = function(req, res) {
   user_password = req.body.password;
 }
 
-
 var get_user = function(user_email, callback) {
   // find the user in the database
   User.find({
@@ -62,5 +70,30 @@ var get_user = function(user_email, callback) {
     if (callback && typeof(callback) === "function") {
       callback(user);
     }
+  });
+}
+
+/*
+* Add a new overall goal
+*/
+
+exports.new_overall_goal = function(req, res) {
+  res.render('new_overall_goal', {title: "Meliorate"});
+}
+
+exports.post_overall_goal_handler = function(req, res) {
+  user_email = req.session.email;
+  get_user(user_email, function(curr_user) {
+    console.log(curr_user);
+    OverallGoal.create({
+      description: req.body.overall_goal_description,
+      isCompleted: false
+    }).success(function(og_goal){
+      console.log(og_goal);
+      user.addOverallGoals([og_goal]).success(function() {
+        console.log("Yay!");
+      });
+    });
+    res.send("Goal added!");
   });
 }
