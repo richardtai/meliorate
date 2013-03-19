@@ -3,8 +3,7 @@ extends layout
 block content
 
   p Great, let's now break down that goal into monthly goals!
-  - console.log("Front end bool: " + months_needed_bool)
-
+  // ask the user how many months the goal will take
   - if (months_needed_bool == false)
     p How many months do you need to achieve this goal?
     form(method="post")
@@ -13,9 +12,8 @@ block content
             option(value='#{i}') #{i}
         - }
       input.btn(type="submit", value="Enter")
-
+  // ask the user to fill in each monthly goal
   - if (months_needed_bool == true)
-    - console.log("Front end num months: " + num_months)
     form(method="post")
       - for (j=1; j < (num_months + 1); j++) {
           p Enter your monthly goal for month #{j}

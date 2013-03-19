@@ -113,10 +113,11 @@ exports.post_overall_goal_handler = function(req, res) {
     }); // corresopnds to OverallGoal's success function
   }
 
-  //post handler for determining how many months are needed to achieve the overall goal
+  // post handler for determining how many months are needed to achieve the overall goal
   else if((mn_bool == false) && (og_bool == true)) {
+    // need to change to int, or else you take the string value which is not what we want
     num_months = parseInt(req.body.months_needed);
-    console.log(num_months);
+    // set the mn_bool to true to signify that the user has specified how many months the goal should take to achieve
     mn_bool = true;
     res.render('new_monthly_goal', {title: "Meliorate", months_needed_bool: mn_bool, num_months: num_months});
   }
