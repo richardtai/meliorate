@@ -5,10 +5,9 @@ block content
   p #{fmg_goal.description}
   p What goals do you have for each week this month to achieve this goal?
   form(method="post")
-    select(name="weekly_goals")
-    - for (i=1; i<4; i++) {
-        p Enter your monthly goal for month #{i}
-        input(type="text", name='week#{i}', value='Week #{i}')
-    - }
+  - for (i=1; i<5; i++) {
+      p Enter your monthly goal for month #{i}
+      input(type="text", name='week#{i}', value='Week #{i}')
+  - }
     br
     input.btn(type="submit", value="Enter")

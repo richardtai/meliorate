@@ -127,33 +127,46 @@ exports.post_overall_goal_handler = function(req, res) {
 
   // post handler for storing the monthly goals
   else if((mn_bool == true) && (og_bool == true)) {
-    console.log(req.body);
-    monthly_goal_array = req.body;
-    first_month_bool = true;
-    var first_month_id;
-
-    for (key in req.body) {
-      console.log(req.body[key]);
-      MonthlyGoal.create({
-        description: req.body[key],
-        isCompleted: false
-      }).success(function(mg_goal) {
-        overall_goal.addMonthlyGoal(mg_goal).success(function() {
-          if (first_month_bool == true) {
-            first_month_id = mg_goal.id;
-            console.log("First monthly goal id: " + mg_goal.id);
-            first_month_bool = false;
-          }
-          console.log("Added mg_goal " + mg_goal.description + " to " + overall_goal.description);
-        });
-      });
-    }
-    // Turn this into a separate function, then create a callback for it, like get_user
-    MonthlyGoal.find({
-      where: {id: first_month_id}
-    }).success(function(fmg_goal){
-      console.log(fmg_goal);
-      res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: fmg_goal});
+    // add the monthly goals the user specified to the database
+    add_monthly_goals(req.body, function(first_month_id) {
+      // find the first monthly goal
+      find_first_monthly_goal(first_month_id, function(fmg_goal) {
+        // render the page with the first monthly goal's data
+        res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: fmg_goal});
+      });      
     });
   }
+}
+
+var add_monthly_goals = function(mg_data, callback) {
+  // set the first month bool to true, when we have the data, we set it to false
+  first_month_bool = true;
+  // loop through the keys in the data
+  for (key in mg_data) {
+    // create the monthly goal
+    MonthlyGoal.create({
+      description: mg_data[key],
+      isCompleted: false
+      // upon success, associate it to the overall goal
+    }).success(function(mg_goal) {
+      overall_goal.addMonthlyGoal(mg_goal).success(function() {
+        // this is how we find the first month's data
+        if (first_month_bool == true) {
+          first_month_id = mg_goal.id;
+          first_month_bool = false;
+          callback(first_month_id);
+        }
+      }); //overall_goal.addMonthlyGoal
+    }); // success
+  } // for
+}
+
+
+// finds the first monthly goal to display to a new user (part of the tutorial)
+var find_first_monthly_goal = function(month_id, callback) {
+  MonthlyGoal.find({
+    where: {id: month_id}
+  }).success(function(fmg_goal) {
+    callback(fmg_goal);
+  });
 }
