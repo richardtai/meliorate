@@ -29,12 +29,24 @@ var MonthlyGoal = sequelize.define('MonthlyGoal', {
   isCompleted: Sequelize.BOOLEAN
 });
 
+var WeeklyGoal = sequelize.define('WeeklyGoal', {
+  description: Sequelize.STRING,
+  isCompleted: Sequelize.BOOLEAN
+});
+
+var DailyGoal = sequelize.define('DailyGoal', {
+  description: Sequelize.STRING,
+  isCompleted: Sequelize.BOOLEAN
+});
+
 User.hasMany(OverallGoal);
 OverallGoal.hasMany(MonthlyGoal);
+MonthlyGoal.hasMany(WeeklyGoal);
+WeeklyGoal.hasMany(DailyGoal);
 
 // Global variables
 
-var user, overall_goal, mn_bool, og_bool, num_months;
+var user, overall_goal, monthly_goal, weekly_goal, mn_bool, og_bool, wg_bool, db_bool, num_months;
 
 /*
  * GET home page.
@@ -49,8 +61,7 @@ exports.index = function(req, res) {
     // find user via session email and then render the home page
     get_user(user_email, function(curr_user) {
       user = curr_user;
-      mn_bool = false;
-      og_bool = false;
+      reset_bool();
       res.render('home', {title: "Meliorate", user: curr_user});
     });
   }
@@ -76,18 +87,6 @@ exports.post_login_handler = function(req, res) {
   user_password = req.body.password;
 }
 
-var get_user = function(user_email, callback) {
-  // find the user in the database
-  User.find({
-    where:{email: user_email}
-  }).success(function(user) {
-    // if found, data is stored in 'user', and we then call our callback function
-    if (callback && typeof(callback) === "function") {
-      callback(user);
-    }
-  });
-}
-
 /*
 * Add a new overall goal
 */
@@ -97,10 +96,13 @@ exports.new_overall_goal = function(req, res) {
 }
 
 exports.post_overall_goal_handler = function(req, res) {
+  console.log("---------------------------------");
+  console.log("          POST REQUEST           ");
+  console.log("---------------------------------");
 
   // post handler for adding an overall goal
   // if og_bool is false, that means we have not set an overall goal yet
-  if((mn_bool == false) && (og_bool == false)) {
+  if((mn_bool == false) && (og_bool == false) && (wg_bool == false)) {
     //set overall goal to true
     og_bool = true;
     // create the overall goal that the user input 
@@ -117,7 +119,7 @@ exports.post_overall_goal_handler = function(req, res) {
   }
 
   // post handler for determining how many months are needed to achieve the overall goal
-  else if((mn_bool == false) && (og_bool == true)) {
+  else if((mn_bool == false) && (og_bool == true) && (wg_bool == false) && (dg_bool == false)) {
     // need to change to int, or else you take the string value which is not what we want
     num_months = parseInt(req.body.months_needed);
     // set the mn_bool to true to signify that the user has specified how many months the goal should take to achieve
@@ -126,18 +128,67 @@ exports.post_overall_goal_handler = function(req, res) {
   }
 
   // post handler for storing the monthly goals
-  else if((mn_bool == true) && (og_bool == true)) {
+  else if((mn_bool == true) && (og_bool == true) && (wg_bool == false) && (dg_bool == false)) {
     // add the monthly goals the user specified to the database
     add_monthly_goals(req.body, function(first_month_id) {
       // find the first monthly goal
       find_first_monthly_goal(first_month_id, function(fmg_goal) {
+        // find a more elegant way to fix this if this is my problem.
         // render the page with the first monthly goal's data
+        // set weekly goal boolean true for the post handler
+        wg_bool = true;
         res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: fmg_goal});
       });      
     });
   }
+
+  // post handler for storing weekly goals
+  else if((mn_bool == true) && (og_bool == true) && (wg_bool == true) && (dg_bool == false)) {
+    add_weekly_goals(req.body, function(first_week_id) {
+      find_first_weekly_goal(first_week_id, function(fwg_goal) {
+        dg_bool = true;
+        res.render('new_daily_goal', {title: "Meliorate", fwg_goal: fwg_goal});
+      });
+    });
+  }
+
+  // post handler for storing daily goals
+  else if((mn_bool == true) && (og_bool == true) && (wg_bool == true) && (dg_bool == true)) {
+    add_daily_goals(req.body, function() {
+      console.log(user);
+      user.updateAttributes({
+        new_user: false
+      }).success(function() {
+        console.log(user.new_user);
+        res.render('home', {title: "Meliorate", user: user});
+      });
+    });
+  }
+
 }
 
+// decomp'd functions
+
+var reset_bool = function() {
+    mn_bool = false;
+    og_bool = false;
+    wg_bool = false;
+    dg_bool = false;
+}
+
+var get_user = function(user_email, callback) {
+  // find the user in the database
+  User.find({
+    where:{email: user_email}
+  }).success(function(user) {
+    // if found, data is stored in 'user', and we then call our callback function
+    if (callback && typeof(callback) === "function") {
+      callback(user);
+    }
+  });
+}
+
+// add the monthly goals the user specifies to the database
 var add_monthly_goals = function(mg_data, callback) {
   // set the first month bool to true, when we have the data, we set it to false
   first_month_bool = true;
@@ -154,6 +205,7 @@ var add_monthly_goals = function(mg_data, callback) {
         if (first_month_bool == true) {
           first_month_id = mg_goal.id;
           first_month_bool = false;
+          monthly_goal = mg_goal;
           callback(first_month_id);
         }
       }); //overall_goal.addMonthlyGoal
@@ -169,4 +221,49 @@ var find_first_monthly_goal = function(month_id, callback) {
   }).success(function(fmg_goal) {
     callback(fmg_goal);
   });
+}
+
+// adds the weekly goals to the database
+var add_weekly_goals = function(wg_data, callback) {
+  first_week_bool = true;
+  for (key in wg_data) {
+    WeeklyGoal.create({
+      description: wg_data[key],
+      isCompleted: false
+    }).success(function(wg_goal){
+      monthly_goal.addWeeklyGoal(wg_goal).success(function() {
+        if(first_week_bool == true) {
+          first_week_id = wg_goal.id;
+          first_week_bool = false;
+          weekly_goal = wg_goal;
+          console.log(wg_goal.description);
+          callback(first_week_id);
+        }
+      });
+    });
+  }
+}
+
+// finds the first weekly goal
+var find_first_weekly_goal = function(week_id, callback) {
+  WeeklyGoal.find({
+    where: {id: week_id}
+  }).success(function(fwg_goal) {
+    callback(fwg_goal);
+  });
+}
+
+// adds the daily goals to the database
+var add_daily_goals = function(dg_data, callback) {
+  first_daily_bool = true;
+  for(key in dg_data) {
+    DailyGoal.create({
+      description: dg_data[key],
+      isCompleted: false
+    }).success(function(dg_goal){
+      weekly_goal.addDailyGoal(dg_goal).success(function() {
+      });
+    });
+  }
+  callback();
 }
