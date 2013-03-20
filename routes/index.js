@@ -129,6 +129,8 @@ exports.post_overall_goal_handler = function(req, res) {
   else if((mn_bool == true) && (og_bool == true)) {
     console.log(req.body);
     monthly_goal_array = req.body;
+    first_month_bool = true;
+    var first_month_id;
 
     for (key in req.body) {
       console.log(req.body[key]);
@@ -136,9 +138,22 @@ exports.post_overall_goal_handler = function(req, res) {
         description: req.body[key],
         isCompleted: false
       }).success(function(mg_goal) {
-        overall_goal.addMonthlyGoal(mg_goal);
+        overall_goal.addMonthlyGoal(mg_goal).success(function() {
+          if (first_month_bool == true) {
+            first_month_id = mg_goal.id;
+            console.log("First monthly goal id: " + mg_goal.id);
+            first_month_bool = false;
+          }
+          console.log("Added mg_goal " + mg_goal.description + " to " + overall_goal.description);
+        });
       });
     }
-    res.render('new_weekly_goal', {title: "Meliorate"});
+    // Turn this into a separate function, then create a callback for it, like get_user
+    MonthlyGoal.find({
+      where: {id: first_month_id}
+    }).success(function(fmg_goal){
+      console.log(fmg_goal);
+      res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: fmg_goal});
+    });
   }
 }

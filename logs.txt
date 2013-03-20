@@ -1,0 +1,242 @@
+s server listening on port 3000
+Executing: CREATE TABLE IF NOT EXISTS "DailyGoals" ("description" VARCHAR(255), "isCompleted" BOOLEAN, "id"   SERIAL , "createdAt" TIMESTAMP NOT NULL, "updatedAt" TIMESTAMP NOT NULL, "WeeklyGoalId" INTEGER, PRIMARY KEY ("id"));
+Executing: CREATE TABLE IF NOT EXISTS "WeeklyGoals" ("description" VARCHAR(255), "isCompleted" BOOLEAN, "id"   SERIAL , "createdAt" TIMESTAMP NOT NULL, "updatedAt" TIMESTAMP NOT NULL, "MonthlyGoalId" INTEGER, PRIMARY KEY ("id"));
+Executing: CREATE TABLE IF NOT EXISTS "MonthlyGoals" ("description" VARCHAR(255), "isCompleted" BOOLEAN, "id"   SERIAL , "createdAt" TIMESTAMP NOT NULL, "updatedAt" TIMESTAMP NOT NULL, "OverallGoalId" INTEGER, PRIMARY KEY ("id"));
+Executing: CREATE TABLE IF NOT EXISTS "OverallGoals" ("description" VARCHAR(255), "isCompleted" BOOLEAN, "id"   SERIAL , "createdAt" TIMESTAMP NOT NULL, "updatedAt" TIMESTAMP NOT NULL, "UserId" INTEGER, PRIMARY KEY ("id"));
+Executing: CREATE TABLE IF NOT EXISTS "Users" ("first_name" VARCHAR(255), "last_name" VARCHAR(255), "email" VARCHAR(255), "password" VARCHAR(255), "new_user" BOOLEAN DEFAULT true, "id"   SERIAL , "createdAt" TIMESTAMP NOT NULL, "updatedAt" TIMESTAMP NOT NULL, PRIMARY KEY ("id"));
+GET / 200 67ms - 1.07kb
+GET /bootstrap/css/bootstrap-responsive.css 200 11ms - 21.59kb
+GET /stylesheets/custom-style.css 200 6ms - 204
+GET /bootstrap/css/bootstrap.css 200 10ms - 124.26kb
+Executing: INSERT INTO "Users" ("first_name","last_name","email","password","createdAt","updatedAt") VALUES ('Test','User','tu5@gmail.com','foobar','2013-03-20 3:00:29.367000','2013-03-20 3:00:29.367000') RETURNING *;
+POST / 302 7ms - 58
+Executing: SELECT * FROM "Users" WHERE "email"='tu5@gmail.com' LIMIT 1;
+GET / 200 21ms - 398
+GET /bootstrap/css/bootstrap-responsive.css 304 3ms
+GET /stylesheets/custom-style.css 304 4ms
+GET /bootstrap/css/bootstrap.css 304 4ms
+GET /new_overall_goal 200 9ms - 535
+GET /stylesheets/custom-style.css 304 14ms
+GET /bootstrap/css/bootstrap.css 304 18ms
+GET /bootstrap/css/bootstrap-responsive.css 304 17ms
+Executing: INSERT INTO "OverallGoals" ("description","isCompleted","createdAt","updatedAt","UserId") VALUES ('Default OGoal',false,'2013-03-20 3:00:31.588000','2013-03-20 3:00:31.588000',NULL) RETURNING *;
+Executing: SELECT * FROM "OverallGoals" WHERE "UserId"=118;
+Executing: SELECT * FROM "OverallGoals" WHERE "UserId"=118;
+Executing: UPDATE "OverallGoals" SET "description"='Default OGoal',"isCompleted"=false,"id"=120,"createdAt"='2013-03-20 3:00:31.588000',"updatedAt"='2013-03-20 3:00:31.610000',"UserId"=118 WHERE "id"=120 RETURNING *
+POST /new_overall_goal 200 46ms - 949
+GET /stylesheets/custom-style.css 304 5ms
+GET /bootstrap/css/bootstrap.css 304 3ms
+GET /bootstrap/css/bootstrap-responsive.css 304 5ms
+POST /new_overall_goal 200 10ms - 1.56kb
+GET /bootstrap/css/bootstrap-responsive.css 304 2ms
+GET /bootstrap/css/bootstrap.css 304 4ms
+GET /stylesheets/custom-style.css 304 3ms
+{ month1: 'Goal 1',
+  month2: 'Goal 2',
+  month3: 'Goal 3',
+  month4: 'Goal 4',
+  month5: 'Goal 5',
+  month6: 'Goal 6',
+  month7: 'Goal 7',
+  month8: 'Goal 8',
+  month9: 'Goal 9',
+  month10: 'Goal 10',
+  month11: 'Goal 11',
+  month12: 'Goal 12' }
+Goal 1
+Goal 2
+Goal 3
+Goal 4
+Goal 5
+Goal 6
+Goal 7
+Goal 8
+Goal 9
+Goal 10
+Goal 11
+Goal 12
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 1',false,'2013-03-20 3:00:35.765000','2013-03-20 3:00:35.765000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 2',false,'2013-03-20 3:00:35.766000','2013-03-20 3:00:35.766000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 3',false,'2013-03-20 3:00:35.766000','2013-03-20 3:00:35.766000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 4',false,'2013-03-20 3:00:35.766000','2013-03-20 3:00:35.766000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 5',false,'2013-03-20 3:00:35.767000','2013-03-20 3:00:35.767000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 6',false,'2013-03-20 3:00:35.767000','2013-03-20 3:00:35.767000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 7',false,'2013-03-20 3:00:35.768000','2013-03-20 3:00:35.768000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 8',false,'2013-03-20 3:00:35.768000','2013-03-20 3:00:35.768000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 9',false,'2013-03-20 3:00:35.768000','2013-03-20 3:00:35.768000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 10',false,'2013-03-20 3:00:35.768000','2013-03-20 3:00:35.769000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 11',false,'2013-03-20 3:00:35.769000','2013-03-20 3:00:35.769000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 12',false,'2013-03-20 3:00:35.769000','2013-03-20 3:00:35.769000',NULL) RETURNING *;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "id" IS NULL LIMIT 1;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+POST /new_overall_goal 200 41ms - 278
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 1',"isCompleted"=false,"id"=161,"createdAt"='2013-03-20 3:00:35.765000',"updatedAt"='2013-03-20 3:00:35.827000',"OverallGoalId"=120 WHERE "id"=161 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 2',"isCompleted"=false,"id"=162,"createdAt"='2013-03-20 3:00:35.766000',"updatedAt"='2013-03-20 3:00:35.828000',"OverallGoalId"=120 WHERE "id"=162 RETURNING *
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=120;
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 3',"isCompleted"=false,"id"=163,"createdAt"='2013-03-20 3:00:35.766000',"updatedAt"='2013-03-20 3:00:35.830000',"OverallGoalId"=120 WHERE "id"=163 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 4',"isCompleted"=false,"id"=164,"createdAt"='2013-03-20 3:00:35.766000',"updatedAt"='2013-03-20 3:00:35.833000',"OverallGoalId"=120 WHERE "id"=164 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 5',"isCompleted"=false,"id"=165,"createdAt"='2013-03-20 3:00:35.767000',"updatedAt"='2013-03-20 3:00:35.834000',"OverallGoalId"=120 WHERE "id"=165 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 6',"isCompleted"=false,"id"=166,"createdAt"='2013-03-20 3:00:35.767000',"updatedAt"='2013-03-20 3:00:35.837000',"OverallGoalId"=120 WHERE "id"=166 RETURNING *
+GET /stylesheets/custom-style.css 304 6ms
+GET /bootstrap/css/bootstrap.css 304 6ms
+GET /bootstrap/css/bootstrap-responsive.css 304 6ms
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 7',"isCompleted"=false,"id"=167,"createdAt"='2013-03-20 3:00:35.768000',"updatedAt"='2013-03-20 3:00:35.841000',"OverallGoalId"=120 WHERE "id"=167 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 8',"isCompleted"=false,"id"=168,"createdAt"='2013-03-20 3:00:35.768000',"updatedAt"='2013-03-20 3:00:35.844000',"OverallGoalId"=120 WHERE "id"=168 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 9',"isCompleted"=false,"id"=169,"createdAt"='2013-03-20 3:00:35.768000',"updatedAt"='2013-03-20 3:00:35.848000',"OverallGoalId"=120 WHERE "id"=169 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 10',"isCompleted"=false,"id"=170,"createdAt"='2013-03-20 3:00:35.768000',"updatedAt"='2013-03-20 3:00:35.851000',"OverallGoalId"=120 WHERE "id"=170 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 11',"isCompleted"=false,"id"=171,"createdAt"='2013-03-20 3:00:35.769000',"updatedAt"='2013-03-20 3:00:35.852000',"OverallGoalId"=120 WHERE "id"=171 RETURNING *
+First monthly goal: Goal 1
+Added mg_goal Goal 1 to Default OGoal
+Added mg_goal Goal 2 to Default OGoal
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 1',"isCompleted"=false,"id"=161,"createdAt"='2013-03-20 3:00:35.765000',"updatedAt"='2013-03-20 3:00:35.862000',"OverallGoalId"=NULL WHERE "id"=161 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 2',"isCompleted"=false,"id"=162,"createdAt"='2013-03-20 3:00:35.766000',"updatedAt"='2013-03-20 3:00:35.863000',"OverallGoalId"=NULL WHERE "id"=162 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 12',"isCompleted"=false,"id"=172,"createdAt"='2013-03-20 3:00:35.769000',"updatedAt"='2013-03-20 3:00:35.863000',"OverallGoalId"=120 WHERE "id"=172 RETURNING *
+Added mg_goal Goal 3 to Default OGoal
+Added mg_goal Goal 4 to Default OGoal
+Added mg_goal Goal 5 to Default OGoal
+Added mg_goal Goal 6 to Default OGoal
+Added mg_goal Goal 7 to Default OGoal
+Added mg_goal Goal 8 to Default OGoal
+Added mg_goal Goal 9 to Default OGoal
+Added mg_goal Goal 10 to Default OGoal
+Added mg_goal Goal 11 to Default OGoal
+Added mg_goal Goal 12 to Default OGoal
+GET / 200 12ms - 1.07kb
+GET /bootstrap/css/bootstrap-responsive.css 200 5ms - 21.59kb
+GET /stylesheets/custom-style.css 200 4ms - 204
+GET /bootstrap/css/bootstrap.css 200 4ms - 124.26kb
+Executing: INSERT INTO "Users" ("first_name","last_name","email","password","createdAt","updatedAt") VALUES ('Test','User','tu6@gmail.com','foobar','2013-03-20 3:01:53.474000','2013-03-20 3:01:53.474000') RETURNING *;
+POST / 302 6ms - 58
+Executing: SELECT * FROM "Users" WHERE "email"='tu6@gmail.com' LIMIT 1;
+GET / 200 14ms - 398
+GET /stylesheets/custom-style.css 304 4ms
+GET /bootstrap/css/bootstrap.css 304 3ms
+GET /bootstrap/css/bootstrap-responsive.css 304 4ms
+GET /new_overall_goal 200 6ms - 535
+GET /stylesheets/custom-style.css 304 6ms
+GET /bootstrap/css/bootstrap.css 304 6ms
+GET /bootstrap/css/bootstrap-responsive.css 304 7ms
+Executing: INSERT INTO "OverallGoals" ("description","isCompleted","createdAt","updatedAt","UserId") VALUES ('Default OGoal',false,'2013-03-20 3:01:56.21000','2013-03-20 3:01:56.22000',NULL) RETURNING *;
+Executing: SELECT * FROM "OverallGoals" WHERE "UserId"=119;
+Executing: SELECT * FROM "OverallGoals" WHERE "UserId"=119;
+Executing: UPDATE "OverallGoals" SET "description"='Default OGoal',"isCompleted"=false,"id"=121,"createdAt"='2013-03-20 3:01:56.210000',"updatedAt"='2013-03-20 3:01:56.41000',"UserId"=119 WHERE "id"=121 RETURNING *
+POST /new_overall_goal 200 28ms - 949
+GET /stylesheets/custom-style.css 304 8ms
+GET /bootstrap/css/bootstrap.css 304 5ms
+GET /bootstrap/css/bootstrap-responsive.css 304 3ms
+POST /new_overall_goal 200 8ms - 1.56kb
+GET /bootstrap/css/bootstrap-responsive.css 304 4ms
+GET /bootstrap/css/bootstrap.css 304 3ms
+GET /stylesheets/custom-style.css 304 3ms
+{ month1: 'Goal 1',
+  month2: 'Goal 2',
+  month3: 'Goal 3',
+  month4: 'Goal 4',
+  month5: 'Goal 5',
+  month6: 'Goal 6',
+  month7: 'Goal 7',
+  month8: 'Goal 8',
+  month9: 'Goal 9',
+  month10: 'Goal 10',
+  month11: 'Goal 11',
+  month12: 'Goal 12' }
+Goal 1
+Goal 2
+Goal 3
+Goal 4
+Goal 5
+Goal 6
+Goal 7
+Goal 8
+Goal 9
+Goal 10
+Goal 11
+Goal 12
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 1',false,'2013-03-20 3:01:59.287000','2013-03-20 3:01:59.287000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 2',false,'2013-03-20 3:01:59.287000','2013-03-20 3:01:59.287000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 3',false,'2013-03-20 3:01:59.288000','2013-03-20 3:01:59.288000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 4',false,'2013-03-20 3:01:59.288000','2013-03-20 3:01:59.288000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 5',false,'2013-03-20 3:01:59.288000','2013-03-20 3:01:59.288000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 6',false,'2013-03-20 3:01:59.288000','2013-03-20 3:01:59.288000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 7',false,'2013-03-20 3:01:59.289000','2013-03-20 3:01:59.289000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 8',false,'2013-03-20 3:01:59.289000','2013-03-20 3:01:59.289000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 9',false,'2013-03-20 3:01:59.289000','2013-03-20 3:01:59.289000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 10',false,'2013-03-20 3:01:59.290000','2013-03-20 3:01:59.290000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 11',false,'2013-03-20 3:01:59.290000','2013-03-20 3:01:59.290000',NULL) RETURNING *;
+Executing: INSERT INTO "MonthlyGoals" ("description","isCompleted","createdAt","updatedAt","OverallGoalId") VALUES ('Goal 12',false,'2013-03-20 3:01:59.290000','2013-03-20 3:01:59.291000',NULL) RETURNING *;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "id" IS NULL LIMIT 1;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+POST /new_overall_goal 200 66ms - 278
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: SELECT * FROM "MonthlyGoals" WHERE "OverallGoalId"=121;
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 1',"isCompleted"=false,"id"=173,"createdAt"='2013-03-20 3:01:59.287000',"updatedAt"='2013-03-20 3:01:59.366000',"OverallGoalId"=121 WHERE "id"=173 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 2',"isCompleted"=false,"id"=174,"createdAt"='2013-03-20 3:01:59.287000',"updatedAt"='2013-03-20 3:01:59.367000',"OverallGoalId"=121 WHERE "id"=174 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 3',"isCompleted"=false,"id"=175,"createdAt"='2013-03-20 3:01:59.288000',"updatedAt"='2013-03-20 3:01:59.370000',"OverallGoalId"=121 WHERE "id"=175 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 4',"isCompleted"=false,"id"=176,"createdAt"='2013-03-20 3:01:59.288000',"updatedAt"='2013-03-20 3:01:59.371000',"OverallGoalId"=121 WHERE "id"=176 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 5',"isCompleted"=false,"id"=177,"createdAt"='2013-03-20 3:01:59.288000',"updatedAt"='2013-03-20 3:01:59.372000',"OverallGoalId"=121 WHERE "id"=177 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 6',"isCompleted"=false,"id"=178,"createdAt"='2013-03-20 3:01:59.288000',"updatedAt"='2013-03-20 3:01:59.373000',"OverallGoalId"=121 WHERE "id"=178 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 7',"isCompleted"=false,"id"=179,"createdAt"='2013-03-20 3:01:59.289000',"updatedAt"='2013-03-20 3:01:59.376000',"OverallGoalId"=121 WHERE "id"=179 RETURNING *
+GET /stylesheets/custom-style.css 304 4ms
+GET /bootstrap/css/bootstrap.css 304 3ms
+GET /bootstrap/css/bootstrap-responsive.css 304 5ms
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 8',"isCompleted"=false,"id"=180,"createdAt"='2013-03-20 3:01:59.289000',"updatedAt"='2013-03-20 3:01:59.383000',"OverallGoalId"=121 WHERE "id"=180 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 9',"isCompleted"=false,"id"=181,"createdAt"='2013-03-20 3:01:59.289000',"updatedAt"='2013-03-20 3:01:59.386000',"OverallGoalId"=121 WHERE "id"=181 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 10',"isCompleted"=false,"id"=182,"createdAt"='2013-03-20 3:01:59.290000',"updatedAt"='2013-03-20 3:01:59.397000',"OverallGoalId"=121 WHERE "id"=182 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 11',"isCompleted"=false,"id"=183,"createdAt"='2013-03-20 3:01:59.290000',"updatedAt"='2013-03-20 3:01:59.398000',"OverallGoalId"=121 WHERE "id"=183 RETURNING *
+Executing: UPDATE "MonthlyGoals" SET "description"='Goal 12',"isCompleted"=false,"id"=184,"createdAt"='2013-03-20 3:01:59.290000',"updatedAt"='2013-03-20 3:01:59.400000',"OverallGoalId"=121 WHERE "id"=184 RETURNING *
+First monthly goal: Goal 1
+Added mg_goal Goal 1 to Default OGoal
+Added mg_goal Goal 2 to Default OGoal
+Added mg_goal Goal 3 to Default OGoal
+Added mg_goal Goal 4 to Default OGoal
+Added mg_goal Goal 5 to Default OGoal
+Added mg_goal Goal 6 to Default OGoal
+Added mg_goal Goal 7 to Default OGoal
+Added mg_goal Goal 8 to Default OGoal
+Added mg_goal Goal 9 to Default OGoal
+Added mg_goal Goal 10 to Default OGoal
+Added mg_goal Goal 11 to Default OGoal
+Added mg_goal Goal 12 to Default OGoal
