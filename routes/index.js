@@ -16,7 +16,11 @@ var User = sequelize.define('Users', {
   first_name: Sequelize.STRING,
   last_name: Sequelize.STRING,
   email: Sequelize.STRING,
-  password: Sequelize.STRING
+  password: Sequelize.STRING,
+  new_user: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
+  }
 });
 
 var OverallGoal = sequelize.define('OverallGoal', {
@@ -96,9 +100,6 @@ exports.new_overall_goal = function(req, res) {
 }
 
 exports.post_overall_goal_handler = function(req, res) {
-  console.log("---------------------------------");
-  console.log("          POST REQUEST           ");
-  console.log("---------------------------------");
 
   // post handler for adding an overall goal
   // if og_bool is false, that means we have not set an overall goal yet
@@ -108,7 +109,7 @@ exports.post_overall_goal_handler = function(req, res) {
     // create the overall goal that the user input 
     OverallGoal.create({
       description: req.body.overall_goal_description,
-      isCompleted: false,
+      isCompleted: false
       // upon success, add the overall goal to the user
     }).success(function(og_goal){
       user.addOverallGoal(og_goal).success(function() {
@@ -155,13 +156,11 @@ exports.post_overall_goal_handler = function(req, res) {
   // post handler for storing daily goals
   else if((mn_bool == true) && (og_bool == true) && (wg_bool == true) && (dg_bool == true)) {
     add_daily_goals(req.body, function() {
-      console.log(user);
-      user.updateAttributes({
-        new_user: false
-      }).success(function() {
+      user.new_user = 'false';
+      user.save().success(function(){
         console.log(user.new_user);
-        res.render('home', {title: "Meliorate", user: user});
-      });
+        res.render('home', {title: "Meliorate", user: user})
+      ;});
     });
   }
 
