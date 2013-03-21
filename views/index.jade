@@ -1,26 +1,34 @@
-extends layout
 
-block content
-  div.navbar-static-top
-    h5 Placeholder for nav bar!
+doctype 5
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.css')\
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.css')
+    link(rel='stylesheet', href='/stylesheets/custom-style.css')
+
+body.signup
+  div.spacing
   div.row-fluid.span12
     div.signup-container
-      div.signupblock.span5
-        h1 Welcome to Meliorate!
+      div.welcome-message.span5
+        h2 Welcome to 
+        h1 Meliorate!
         h4 Helping you be a better you.
-      div.signup-block.span5
-        div.signup-info-wrapper
-          form(method="post")
-            h3 Sign up for Meliorate!
-            input(type="text", placeholder="First Name", name="firstname", value="Test")
-            br
-            input(type="text", placeholder="Last Name", name="lastname", value="User")
-            br
-            input(type="text", placeholder="Email", name="email", value="tu@gmail.com", autofocus="autofocus")
-            br
-            input(type="password", placeholder="Password", name="password", value="foobar")
-            br
-            input.btn(type="submit", value="Sign Up!")
-          h6 Already have an account? 
-            a('href=/login') Log in!
+      div.signup-block-wrapper.span5
+        div.signup-block
+          div.signup-info-wrapper
+            form(method="post")
+              h3 Sign up for Meliorate!
+              input(type="text", placeholder="First Name", name="firstname", value="Test")
+              br
+              input(type="text", placeholder="Last Name", name="lastname", value="User")
+              br
+              input(type="text", placeholder="Email", name="email", value="tu@gmail.com", autofocus="autofocus")
+              br
+              input(type="password", placeholder="Password", name="password", value="foobar")
+              br
+              input.btn(type="submit", value="Sign Up!")
+            h6 Already have an account? 
+              a('href=/login') Log in!
 

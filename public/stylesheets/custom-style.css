@@ -1,15 +1,54 @@
+html {
+  background-image: url('/images/bg.png');
+  background-color: #000;
+}
+
+body.signup {
+  background-image: url('/images/bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: none;
+  min-height:750px;
+  height: 100%;
+}
+
+.font-color {
+  color: #ccc;
+}
+
 .signup-container {
-  width: 82.97872340425532%;
+  width: 1040px;
   margin: 0px auto;
+}
+
+.welcome-message {
+  text-align: center;
+  background: #fff;
+  height: 520px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #999;
 }
 
 .signup-block {
   min-height: 300px;
   height: 500px;
-  padding: 15px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #999;
+  opacity: 1;
+}
+
+.signup-block-wrapper {
 }
 
 .signup-info-wrapper {
-  margin: 0px auto;
+  margin: 3.438em auto;
   width: 50%;
+  opacity: 1;
+}
+
+.spacing {
+  padding-bottom: 6em;
 }

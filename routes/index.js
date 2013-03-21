@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize'),
-    sequelize = new Sequelize ('meliorate_db', 'richardtai', null {
+    sequelize = new Sequelize ('meliorate_db', 'richardtai', null, {
       dialect: 'postgres',
       // When connecting to the database, psql uses 'local socket' as the default
       // method of connecting, while sequelize uses 'host'. Therefore, specify this 
@@ -66,12 +66,21 @@ exports.index = function(req, res) {
     get_user(user_email, function(curr_user) {
       reset_bool();
       user = curr_user;
-      user.getOverallGoals().success(function(og_array){
-        console.log(og_array);
-        og.getMonthlyGoals().success(function(mg_array) {
-         res.render('home', {title: "Meliorate", user: curr_user, og_array: og_array, mg_array: mg_array});
+      if (user.new_user == true) {
+        res.render('home', {title: "Meliorate", user: curr_user});
+      }
+      else if (user.new_user == false) {
+        user.getOverallGoals().success(function(og_array){
+          og_array[0].getMonthlyGoals().success(function(mg_array) {
+            mg_array[0].getWeeklyGoals().success(function(wg_array) {
+              console.log(mg_array[0]);
+              wg_array[0].getDailyGoals().success(function(dg_array) {
+                res.render('home', {title: "Meliorate", user: curr_user, og_array: og_array, mg_array: mg_array, wg_array: wg_array, dg_array: dg_array});
+              });
+            });
+          });
         });
-      });
+      }
     });
   }
 };
@@ -204,15 +213,17 @@ var add_monthly_goals = function(mg_data, callback) {
       isCompleted: false
       // upon success, associate it to the overall goal
     }).success(function(mg_goal) {
-      overall_goal.addMonthlyGoal(mg_goal).success(function() {
-        // this is how we find the first month's data
-        if (first_month_bool == true) {
-          first_month_id = mg_goal.id;
-          first_month_bool = false;
-          monthly_goal = mg_goal;
-          callback(first_month_id);
-        }
-      }); //overall_goal.addMonthlyGoal
+      setTimeout(function() {
+         overall_goal.addMonthlyGoal(mg_goal).success(function() {
+          // this is how we find the first month's data
+          if (first_month_bool == true) {
+            first_month_id = mg_goal.id;
+            first_month_bool = false;
+            monthly_goal = mg_goal;
+            callback(first_month_id);
+          }
+        }); //overall_goal.addMonthlyGoal
+      }, 1000);
     }); // success
   } // for
 }
@@ -260,14 +271,18 @@ var find_first_weekly_goal = function(week_id, callback) {
 // adds the daily goals to the database
 var add_daily_goals = function(dg_data, callback) {
   first_daily_bool = true;
+  callback_bool = true;
   for(key in dg_data) {
     DailyGoal.create({
       description: dg_data[key],
       isCompleted: false
     }).success(function(dg_goal){
-      weekly_goal.addDailyGoal(dg_goal).success(function() {
-      });
+      setTimeout(function(){
+        weekly_goal.addDailyGoal(dg_goal).success(function(){});
+      }, 1500);
     });
   }
-  callback();
+  setTimeout(function() {
+    callback();
+  }, 2000);
 }

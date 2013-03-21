@@ -8,7 +8,13 @@ block content
   - else
     p Welcome back #{user.first_name}!
     p Here are your overall goals - click to see how you're doing!
-    - for (i=0; i<1; i++)
+    - for (i= 0 ; i < 1; i++)
       p #{og_array[i].description}
-      - for (j=0; j<mg_array.length; j++)
-        p #{mg_array[i].description}
+      // only going to do the first month
+      - for (j = 0; j < 1; j++)
+        p #{mg_array[j].description}
+        // only going to do the first week
+        - for (k = 0; k < wg_array.length; k++)
+          p #{wg_array[k].description}
+
+
