@@ -1,14 +1,22 @@
 extends layout
 
 block content
-  p Great, now let's break down your first goal:
-  p #{fmg_goal.description}
-  p What goals do you have for each week this month to achieve this goal?
-  form(method="post")
-    - for (i=1; i<5; i++) {
-        p Enter your weekly goal for week #{i}
-        input(type="text", name='week#{i}', value='Week #{i}')
-    - }
-    br
-    input.btn(type="submit", value="Enter")
+  div.spacing-wrapper
+    div.instruction-text
+      p Great, now let's break down your first goal:
+      br
+      p #{fmg_goal.description}
+    div.example-text
+      p What goals do you have for each week this month to achieve this goal?
+    form(method="post")
+      - for (i=1; i<5; i++) {
+          div.example-text.text-left
+            p Enter your weekly goal for week #{i}
+          input.goal(type="text", name='week#{i}', value='Week #{i}')
+      - }
+      br
+      div.button-center
+        input.btn.btn-large(type="submit", value="Enter")
+      br
+      br
 

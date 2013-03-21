@@ -1,8 +1,13 @@
 extends layout
 
 block content
-  p First, let's start things off by defining an overall goal.
-  form(method="post")
-    input(type="text", placeholder="Ex: I want to start a company.", name="overall_goal_description", value="Default OGoal")
-    br
-    input.btn(type="submit", value="Create Goal!")
+  div.spacing-wrapper
+    div.instruction-text
+      p First, let's start things off by defining an overall goal.
+    div.example-text
+      p For example: "I want to start my own company."
+    div.form-wrapper
+      form(method="post")
+        input.goal(type="text", placeholder="Ex: I want to start a company.", name="overall_goal_description", value="Default OGoal")
+        br
+        input.right.btn.btn-large(type="submit", value="Create Goal!")

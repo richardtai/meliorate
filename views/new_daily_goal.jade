@@ -1,12 +1,21 @@
 extends layout
 
 block content
-  p Almost done! Let's break down your first weekly goal into daily goals!
-  p #{fwg_goal.description}
-  form(method="post")
-    - for (i=1; i<8; i++) {
-        p Enter your goal for day #{i}!
-        input(type="text", name='dailygoal#{i}', value='D-Goal #{i}')
-    - }
-    br
-    input.btn(type="submit", value="Enter")
+  div.spacing-wrapper
+    div.instruction-text
+      p Almost done! Let's break down your first weekly goal
+      br
+      p #{fwg_goal.description}
+      br
+      p into daily goals!
+    form(method="post")
+      - for (i=1; i<8; i++) {
+          div.example-text.text-left
+            p Enter your goal for day #{i}!
+          input.goal(type="text", name='dailygoal#{i}', value='D-Goal #{i}')
+      - }
+      br
+      div.button-center
+        input.btn.btn-large(type="submit", value="Enter")
+      br
+      br

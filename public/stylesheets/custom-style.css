@@ -1,14 +1,15 @@
 html {
   background-image: url('/images/bg.png');
-  background-color: #000;
 }
 
 body.signup {
   background-image: url('/images/bg.jpg');
+  background-color: #000;
   background-size: cover;
   background-repeat: no-repeat;
   background-color: none;
-  min-height:750px;
+  min-height: 800px;
+  width: 100%;
   height: 100%;
 }
 
@@ -21,9 +22,15 @@ body.signup {
   margin: 0px auto;
 }
 
+.login-link {
+  margin-top: 40px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .welcome-message {
   text-align: center;
-  background: #fff;
+  background-image: url('/images/bg.png');
   height: 520px;
   padding: 10px;
   border-radius: 6px;
@@ -31,10 +38,10 @@ body.signup {
 }
 
 .signup-block {
+  background-image: url('/images/bg.png');
   min-height: 300px;
   height: 500px;
   padding: 10px;
-  background: #fff;
   border-radius: 6px;
   border: 1px solid #999;
   opacity: 1;
@@ -45,10 +52,80 @@ body.signup {
 
 .signup-info-wrapper {
   margin: 3.438em auto;
-  width: 50%;
+  width: 220px;
   opacity: 1;
 }
 
 .spacing {
   padding-bottom: 6em;
+}
+
+.spacing-wrapper {
+  width: 800px;
+  min-height: 500px;
+  margin: 7em auto;
+}
+
+.hi-user {
+  text-align: center;
+  font-size: 5em;
+  height: 50%;
+  font-weight: 400;
+  margin-bottom: 1em;
+}
+
+.first-timer {
+  height: 50%;
+  font-size: 2em;
+  font-weight:200;
+}
+
+.new-og {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.instruction-text {
+  text-align: center;
+  font-weight: 300;
+  font-size: 2em;
+  margin-bottom: 1em;
+}
+
+.example-text {
+  text-align: center;
+  font-weight: 300;
+  font-size: 1.3em;
+  margin-bottom: 2em;
+}
+
+input[type=text].goal {
+  width: 98%;
+  font-size: 1.5em;
+  font-weight: 200;
+  height: 30px;
+  margin-bottom: 1em;
+}
+
+input[type=submit].btn-right.btn {
+  float:right;
+}
+
+input[type=submit].btn.btn-large.right {
+  float: right;
+}
+
+.button-center {
+  width: 83px;
+  margin: 16px auto;
+}
+
+form.select-months {
+  width: 220px;
+  margin: 0px auto;
+}
+
+.text-left {
+  text-align: left;
+  margin-bottom: 0;
 }
