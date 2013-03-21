@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize'),
-    sequelize = new Sequelize ('meliorate_db', 'richardtai', null, {
+    sequelize = new Sequelize ('meliorate_db', 'postgres', 'root', {
       dialect: 'postgres',
       // When connecting to the database, psql uses 'local socket' as the default
       // method of connecting, while sequelize uses 'host'. Therefore, specify this 
@@ -64,9 +64,14 @@ exports.index = function(req, res) {
     user_email = req.session.email;
     // find user via session email and then render the home page
     get_user(user_email, function(curr_user) {
-      user = curr_user;
       reset_bool();
-      res.render('home', {title: "Meliorate", user: curr_user});
+      user = curr_user;
+      user.getOverallGoals().success(function(og_array){
+        console.log(og_array);
+        og.getMonthlyGoals().success(function(mg_array) {
+         res.render('home', {title: "Meliorate", user: curr_user, og_array: og_array, mg_array: mg_array});
+        });
+      });
     });
   }
 };
@@ -159,7 +164,7 @@ exports.post_overall_goal_handler = function(req, res) {
       user.new_user = 'false';
       user.save().success(function(){
         console.log(user.new_user);
-        res.render('home', {title: "Meliorate", user: user})
+        res.redirect('/');
       ;});
     });
   }

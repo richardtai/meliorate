@@ -7,3 +7,8 @@ block content
       a('href=/new_overall_goal') Create a new goal!
   - else
     p Welcome back #{user.first_name}!
+    p Here are your overall goals - click to see how you're doing!
+    - for (i=0; i<1; i++)
+      p #{og_array[i].description}
+      - for (j=0; j<mg_array.length; j++)
+        p #{mg_array[i].description}
