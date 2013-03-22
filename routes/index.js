@@ -220,9 +220,9 @@ var get_user = function(user_email, callback) {
   });
 }
 
-var add_overall_goal = function (og_data, callback) {
+var add_overall_goal = function (og_description, callback) {
   OverallGoal.create({
-    description: og_data.description,
+    description: og_description,
     isCompleted: false
   }).success(function(og_goal){
     overall_goal = og_goal;
@@ -344,5 +344,5 @@ var add_daily_goals = function(dg_data, callback) {
 var associate_daily_goals = function(daily_array, callback) {
   weekly_goal.setDailyGoals(daily_array).success(function() {
     callback();
-  })
+  });
 }
