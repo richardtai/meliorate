@@ -263,7 +263,7 @@ var add_monthly_goals = function(mg_data, callback) {
           console.log(" ERROR IN ASSOCIATING MONTHLY TO OVERALL ");
           console.log("-----------------------------------------");
         }); //overall_goal.addMonthlyGoal
-      }, 5); //set Timeout
+      }, 3000); //set Timeout
     }); // success
   } // for
 }
@@ -295,7 +295,7 @@ var add_weekly_goals = function(wg_data, callback) {
             callback(first_week_id);
           }
         }); //addWeeklyGoal
-      }, 5); //setTimeout
+      }, 3000); //setTimeout
     }).error(function() {
           console.log("-----------------------------------------");
           console.log(" ERROR IN ASSOCIATING WEEKLY TO MONTHLY ");
@@ -324,7 +324,7 @@ var add_daily_goals = function(dg_data, callback) {
     }).success(function(dg_goal){
        setTimeout(function(){
         weekly_goal.addDailyGoal(dg_goal).success(function(){});
-       }, 5);
+       }, 3000);
     }).error(function() {
           console.log("-----------------------------------------");
           console.log(" ERROR IN ASSOCIATING DAILY TO WEEKLY ");
@@ -333,5 +333,5 @@ var add_daily_goals = function(dg_data, callback) {
   }
   setTimeout(function() {
     callback();
-  }, 500);
+  }, 6000);
 }
