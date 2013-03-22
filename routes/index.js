@@ -43,15 +43,20 @@ var DailyGoal = sequelize.define('DailyGoal', {
   isCompleted: Sequelize.BOOLEAN
 });
 
+// Globals
+
 User.hasMany(OverallGoal);
 OverallGoal.hasMany(MonthlyGoal);
 MonthlyGoal.hasMany(WeeklyGoal);
 WeeklyGoal.hasMany(DailyGoal);
 
-// Global variables
-
 var user, overall_goal, monthly_goal, weekly_goal, mn_bool, og_bool, wg_bool, db_bool, num_months, og_arr, mg_arr, wg_arr, dg_arr,
-    og_home_bool, wg_home_bool, dg_home_bool;
+    og_home_bool, wg_home_bool, dg_home_bool, first_month_id;
+
+var mg_test_arr = [];
+var wg_test_arr = [];
+var dg_test_arr = [];
+
 
 /*
  * GET home page.
@@ -170,24 +175,26 @@ exports.post_overall_goal_handler = function(req, res) {
   // post handler for storing the monthly goals
   else if((mn_bool == true) && (og_bool == true) && (wg_bool == false) && (dg_bool == false)) {
     // add the monthly goals the user specified to the database
-    add_monthly_goals(req.body, function(first_month_id) {
-      // find the first monthly goal
-      find_first_monthly_goal(first_month_id, function(fmg_goal) {
-        // find a more elegant way to fix this if this is my problem.
-        // render the page with the first monthly goal's data
-        // set weekly goal boolean true for the post handler
-        wg_bool = true;
-        res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: fmg_goal});
-      });      
+    add_monthly_goals(req.body, function() {
+      console.log("------ CALLING ASSOCIATE MONTHLY GOALS (3) ------");
+      associate_monthly_goals(overall_goal, mg_test_arr, function() {
+        // find the first monthly goal
+        find_first_monthly_goal(first_month_id, function() {
+          console.log("------ ABOUT TO RENDER NWG (6) -------");
+          // set weekly goal boolean true for the post handler
+          wg_bool = true;
+          res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: first_month_id});
+        });      
+      });
     });
   }
 
   // post handler for storing weekly goals
   else if((mn_bool == true) && (og_bool == true) && (wg_bool == true) && (dg_bool == false)) {
-    add_weekly_goals(req.body, function(first_week_id) {
-      find_first_weekly_goal(first_week_id, function(fwg_goal) {
+    add_weekly_goals(req.body, function() {
+      associate_weekly_goals(wg_test_arr, function() {
         dg_bool = true;
-        res.render('new_daily_goal', {title: "Meliorate", fwg_goal: fwg_goal});
+        res.render('new_daily_goal', {title: "Meliorate", fwg_goal: weekly_goal});
       });
     });
   }
@@ -195,11 +202,12 @@ exports.post_overall_goal_handler = function(req, res) {
   // post handler for storing daily goals
   else if((mn_bool == true) && (og_bool == true) && (wg_bool == true) && (dg_bool == true)) {
     add_daily_goals(req.body, function() {
-      user.new_user = 'false';
-      user.save().success(function(){
-        console.log(user.new_user);
-        res.redirect('/');
-      ;});
+      associate_daily_goals(dg_test_arr, function() {
+        user.new_user = 'false';
+        user.save().success(function(){
+          res.redirect('/');
+        ;});
+      });
     });
   }
 
@@ -236,9 +244,11 @@ var find_overall_goal = function(og_id, callback) {
 
 // add the monthly goals the user specifies to the database
 var add_monthly_goals = function(mg_data, callback) {
+  console.log(mg_data);
   // set the first month bool to true, when we have the data, we set it to false
   first_month_bool = true;
   // loop through the keys in the data
+  var counter = 0;
   for (key in mg_data) {
     // create the monthly goal
     MonthlyGoal.create({
@@ -246,26 +256,32 @@ var add_monthly_goals = function(mg_data, callback) {
       isCompleted: false
       // upon success, associate it to the overall goal
     }).success(function(mg_goal) {
-      setTimeout(function() {
-        overall_goal.addMonthlyGoal(mg_goal).success(function() {
-          // this is how we find the first month's data
-          if (first_month_bool == true) {
-            console.log("-----------------------------------------");
-            console.log(" ADDED FIRST MONTHLY GOAL AND ASSOCIATED ");
-            console.log("-----------------------------------------");
-            first_month_id = mg_goal.id;
-            first_month_bool = false;
-            monthly_goal = mg_goal;
-            callback(first_month_id);
-          }
-        }).error(function() {
-          console.log("-----------------------------------------");
-          console.log(" ERROR IN ASSOCIATING MONTHLY TO OVERALL ");
-          console.log("-----------------------------------------");
-        }); //overall_goal.addMonthlyGoal
-      }, 10000); //set Timeout
+      counter++;
+      console.log("-------------------(1)----------------------");
+      console.log("Added " + mg_goal.description + " to the database.");
+      mg_test_arr.push(mg_goal);
+      console.log("Counter vs num_months " + counter + " vs " + num_months);
+      console.log("-----------------------------------------");
+      if(counter == num_months) {
+        console.log("----- CALLING BACK (2) ------");
+        callback();
+      }
     }); // success
   } // for
+}
+
+var associate_monthly_goals = function(og_test, monthly_array, callback) {
+  bool = true;
+  console.log("--------------------(4)---------------------");
+  console.log("Monthly array length is " + monthly_array.length);
+  console.log("Overall Goal is: " + overall_goal.description);
+  console.log("-----------------------------------------");
+  og_test.setMonthlyGoals(monthly_array).success(function() {
+    console.log("----- associated? (5) ------");
+    first_month_id = monthly_array[0].id;
+    monthly_goal = monthly_array[0];
+    callback();
+  });
 }
 
 
@@ -281,27 +297,27 @@ var find_first_monthly_goal = function(month_id, callback) {
 // adds the weekly goals to the database
 var add_weekly_goals = function(wg_data, callback) {
   first_week_bool = true;
+  counter = 0;
+  num_weeks = 4;
   for (key in wg_data) {
     WeeklyGoal.create({
       description: wg_data[key],
       isCompleted: false
     }).success(function(wg_goal){
-      setTimeout(function() {
-        monthly_goal.addWeeklyGoal(wg_goal).success(function() {
-          if(first_week_bool == true) {
-            first_week_id = wg_goal.id;
-            first_week_bool = false;
-            weekly_goal = wg_goal;
-            callback(first_week_id);
-          }
-        }); //addWeeklyGoal
-      }, 10000); //setTimeout
-    }).error(function() {
-          console.log("-----------------------------------------");
-          console.log(" ERROR IN ASSOCIATING WEEKLY TO MONTHLY ");
-          console.log("-----------------------------------------");
-        }); //success
+      counter++;
+      wg_test_arr.push(wg_goal);
+      if(counter == num_weeks) {
+        callback();
+      }
+    });
   }
+}
+
+var associate_weekly_goals = function(weekly_array, callback) {
+  monthly_goal.setWeeklyGoals(weekly_array).success(function() {
+    weekly_goal = weekly_array[0];
+    callback()
+  })
 }
 
 // finds the first weekly goal
@@ -315,23 +331,24 @@ var find_first_weekly_goal = function(week_id, callback) {
 
 // adds the daily goals to the database
 var add_daily_goals = function(dg_data, callback) {
-  first_daily_bool = true;
-  callback_bool = true;
+  counter = 0;
+  num_days = 7;
   for(key in dg_data) {
     DailyGoal.create({
       description: dg_data[key],
       isCompleted: false
     }).success(function(dg_goal){
-       setTimeout(function(){
-        weekly_goal.addDailyGoal(dg_goal).success(function(){});
-       }, 10000);
-    }).error(function() {
-          console.log("-----------------------------------------");
-          console.log(" ERROR IN ASSOCIATING DAILY TO WEEKLY ");
-          console.log("-----------------------------------------");
-        });
+      counter++;
+      dg_test_arr.push(dg_goal);
+      if(counter == num_days) {
+        callback();
+      }
+    });
   }
-  setTimeout(function() {
+}
+
+var associate_daily_goals = function(daily_array, callback) {
+  weekly_goal.setDailyGoals(daily_array).success(function() {
     callback();
-  }, 20000);
+  })
 }
