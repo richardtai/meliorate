@@ -2,9 +2,9 @@ extends layout
 
 block content
   div.spacing-wrapper
-    div.instruction-text
+    div.instruction-text.fade-in.one
       p Here are your weekly goals - click to see how you're doing!
-    div.example-text
+    div.example-text.fade-in.two
       - for (i= 0 ; i < wg_array.length; i++)
           div.inline
             a(href='/weekly_goal/#{wg_array[i].id}') #{wg_array[i].description}

@@ -2,13 +2,13 @@ extends layout
 
 block content
   div.spacing-wrapper
-    div.instruction-text
+    div.instruction-text.fade-in.one
       p Great, now let's break down your first goal:
       br
       p #{fmg_goal.description}
-    div.example-text
+    div.example-text.fade-in.two
       p What goals do you have for each week this month to achieve this goal?
-    form(method="post")
+    form.fade-in.three(method="post")
       - for (i=1; i<5; i++) {
           div.example-text.text-left
             p Enter your weekly goal for week #{i}

@@ -2,11 +2,11 @@ extends layout
 
 block content
   div.spacing-wrapper
-    div.instruction-text
+    div.instruction-text.fade-in.one
       p First, let's start things off by defining an overall goal.
-    div.example-text
+    div.example-text.fade-in.two
       p For example: "I want to start my own company."
-    div.form-wrapper
+    div.form-wrapper.fade-in.three
       form(method="post")
         input.goal(type="text", placeholder="Ex: I want to start a company.", name="overall_goal_description", value="Default OGoal")
         br

@@ -2,13 +2,13 @@ extends layout
 
 block content
   div.spacing-wrapper
-    div.instruction-text
+    div.instruction-text.fade-in.one
       p Almost done! Let's break down your first weekly goal
       br
       p #{fwg_goal.description}
       br
       p into daily goals!
-    form(method="post")
+    form.fade-in.two(method="post")
       - for (i=1; i<8; i++) {
           div.example-text.text-left
             p Enter your goal for day #{i}!

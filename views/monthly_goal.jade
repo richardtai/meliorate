@@ -2,9 +2,9 @@ extends layout
 
 block content
   div.spacing-wrapper
-    div.instruction-text
+    div.instruction-text.fade-in.one
       p Here are your monthly goals - click to see how you're doing!
-    div.example-text
+    div.example-text.fade-in.two
       - for (i= 0 ; i < mg_array.length; i++)
         - if (i < (mg_array.length/2) + 0.5)
             div.inline

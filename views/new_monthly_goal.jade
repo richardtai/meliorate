@@ -2,10 +2,10 @@ extends layout
 
 block content
   div.spacing-wrapper
-    div.instruction-text
+    div.instruction-text.fade-in.one
       p Great, let's now break down that goal into monthly goals!
     - if (months_needed_bool == false)
-      div.example-text  
+      div.example-text.fade-in.two
         p How many months do you need to achieve this goal?
       form.select-months(method="post")
         select.month-select(name="months_needed")
@@ -17,7 +17,7 @@ block content
           input.center.btn.btn-large(type="submit", value="Enter")
     // ask the user to fill in each monthly goal
     - if (months_needed_bool == true)
-      form(method="post")
+      form.fade-in.two(method="post")
         - for (j=1; j < (num_months + 1); j++) {
             div.example-text.text-left
               p Enter your monthly goal for month #{j}.

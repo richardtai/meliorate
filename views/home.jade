@@ -4,19 +4,19 @@ block content
   - if (user.new_user == true)
     div.spacing-wrapper
       div.intro
-        div.hi-user
+        div.hi-user.fade-in.one
            p Hi #{user.first_name}!
-        div.first-timer.text-center
+        div.first-timer.text-center.fade-in.two
           p We see that it's your first time here, let's get you started!
-          div.new-og.text-center
+          div.new-og.text-center.fade-in.three
             a('href=/new_overall_goal') Create a new goal!
   - else
     div.spacing-wrapper
-      div.hi-user
+      div.hi-user.fade-in.one
         p Hi #{user.first_name}!
-      div.instruction-text
+      div.instruction-text.fade-in.two
         p Here are your overall goals - click to see how you're doing!
-      div.example-text  
+      div.example-text.fade-in.three
         - for (i = 0 ; i < og_array.length; i++)
           a(href='/home/#{og_array[i].id}') #{og_array[i].description}
 
