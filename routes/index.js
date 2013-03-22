@@ -221,7 +221,7 @@ var get_user = function(user_email, callback) {
 
 var add_overall_goal = function (og_data, callback) {
   OverallGoal.create({
-    description: req.body.overall_goal_description,
+    description: og_data.description,
     isCompleted: false
   }).success(function(og_goal){
     overall_goal = og_goal;
