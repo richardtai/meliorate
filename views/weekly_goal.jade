@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  div.spacing-wrapper
+    div.example-text
+      p Here are your weekly goals - click to see how you're doing!
+    div.example-text
+      - for (i= 0 ; i < wg_array.length; i++)
+          div.inline
+            a(href='/weekly_goal/#{wg_array[i].id}') #{wg_array[i].description}
+      
+
+

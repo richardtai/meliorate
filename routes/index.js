@@ -50,7 +50,8 @@ WeeklyGoal.hasMany(DailyGoal);
 
 // Global variables
 
-var user, overall_goal, monthly_goal, weekly_goal, mn_bool, og_bool, wg_bool, db_bool, num_months;
+var user, overall_goal, monthly_goal, weekly_goal, mn_bool, og_bool, wg_bool, db_bool, num_months, og_arr, mg_arr, wg_arr, dg_arr,
+    og_home_bool, wg_home_bool, dg_home_bool;
 
 /*
  * GET home page.
@@ -71,19 +72,46 @@ exports.index = function(req, res) {
       }
       else if (user.new_user == false) {
         user.getOverallGoals().success(function(og_array){
-          og_array[0].getMonthlyGoals().success(function(mg_array) {
-            mg_array[0].getWeeklyGoals().success(function(wg_array) {
-              console.log(mg_array[0]);
-              wg_array[0].getDailyGoals().success(function(dg_array) {
-                res.render('home', {title: "Meliorate", user: curr_user, og_array: og_array, mg_array: mg_array, wg_array: wg_array, dg_array: dg_array});
-              });
-            });
-          });
+          og_arr = og_array;
+          res.render('home', {title: "Meliorate", user: curr_user, og_array: og_array});
         });
       }
     });
   }
 };
+
+exports.home = function(req, res) {
+  overall_goal_id = req.params.id;
+  find_overall_goal(overall_goal_id, function(og_goal) {
+    og_goal.getMonthlyGoals().success(function(mg_goal_array) {
+      mg_arr = mg_goal_array;
+      res.render('monthly_goal', {title: "Meliorate", user: user, mg_array: mg_goal_array});
+    });
+  });
+}
+
+exports.monthly_goal = function(req, res) {
+  console.log("Monthly goal id: " + req.params.id);
+  month_id = req.params.id;
+  find_first_monthly_goal(month_id, function(mg_goal) {
+    mg_goal.getWeeklyGoals().success(function(wg_goal_array) {
+      wg_arr = wg_goal_array;
+      console.log(wg_arr);
+      res.render('weekly_goal', {title: "Meliorate", user:user, wg_array: wg_goal_array});
+    });
+  });
+}
+
+exports.weekly_goal = function(req, res) {
+  console.log("Weekly goal id: " + req.params.id);
+  week_id = req.params.id;
+  find_first_weekly_goal(week_id, function(wg_goal) {
+    wg_goal.getDailyGoals().success(function(dg_goal_array) {
+      dg_arr = dg_goal_array;
+      res.render('daily_goal', {title: "Meliorate", user: user, dg_array: dg_goal_array});
+    });
+  });
+}
 
 exports.post_handler = function(req, res) {
   // create a user with the values the user put in
@@ -198,6 +226,14 @@ var get_user = function(user_email, callback) {
     if (callback && typeof(callback) === "function") {
       callback(user);
     }
+  });
+}
+
+var find_overall_goal = function(og_id, callback) {
+  OverallGoal.find({
+    where: {id: og_id}
+  }).success(function(og_goal) {
+    callback(og_goal);
   });
 }
 

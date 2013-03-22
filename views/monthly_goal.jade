@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  div.spacing-wrapper
+    div.example-text
+      p Here are your monthly goals - click to see how you're doing!
+    div.example-text
+      - for (i= 0 ; i < mg_array.length; i++)
+        - if (i < mg_array.length/2)
+            div.inline
+              a(href='/monthly_goal/#{mg_array[i].id}') #{mg_array[i].description}
+        - else if (i == mg_array.length/2)
+            // breaks up the spacing
+            br
+        - if (i >= mg_array.length/2)
+            div.inline
+              a(href='/monthly_goal/#{mg_array[i].id}') #{mg_array[i].description}
+
+

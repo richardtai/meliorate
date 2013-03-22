@@ -35,6 +35,10 @@ app.configure('development', function(){
 app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/new_overall_goal', routes.new_overall_goal);
+app.get('/home', routes.home);
+app.get('/home/:id?', routes.home);
+app.get('/monthly_goal/:id?', routes.monthly_goal);
+app.get('/weekly_goal/:id?', routes.weekly_goal);
 
 app.post('/', routes.post_handler);
 app.post('/login', routes.post_login_handler);

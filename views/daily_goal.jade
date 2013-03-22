@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  div.spacing-wrapper
+    div.instruction-text
+      p Here are your daily goals - click to see how you're doing!
+    div.example-text 
+      - for (i= 0 ; i < dg_array.length; i++)
+        - console.log(dg_array.length/2)
+        - if (i < ((dg_array.length/2) + 0.5))
+            div.inline 
+              a(href='/#') #{dg_array[i].description}
+        -  else if (i == ((dg_array.length/2) + 0.5))
+            br
+        - if (i >= ((dg_array.length/2) +0.5))
+            div.inline
+              a(href='/#') #{dg_array[i].description}
