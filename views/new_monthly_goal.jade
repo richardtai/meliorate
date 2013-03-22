@@ -7,7 +7,7 @@ block content
     - if (months_needed_bool == false)
       div.example-text.fade-in.two
         p How many months do you need to achieve this goal?
-      form.select-months(method="post")
+      form.select-months.fade-in.two(method="post")
         select.month-select(name="months_needed")
           - for (i=1; i<13; i++) {
               option(value='#{i}') #{i}
