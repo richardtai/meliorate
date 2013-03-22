@@ -318,5 +318,5 @@ var add_daily_goals = function(dg_data, callback) {
   }
   setTimeout(function() {
     callback();
-  }, 1500);
+  }, 100);
 }
