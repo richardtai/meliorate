@@ -8,17 +8,16 @@ block content
            p Hi #{user.first_name}!
         div.first-timer.text-center
           p We see that it's your first time here, let's get you started!
-          div.new-og
+          div.new-og.text-center
             a('href=/new_overall_goal') Create a new goal!
   - else
     div.spacing-wrapper
       div.hi-user
-        p Welcome back #{user.first_name}!
+        p Hi #{user.first_name}!
       div.instruction-text
         p Here are your overall goals - click to see how you're doing!
       div.example-text  
         - for (i= 0 ; i < 1; i++)
           a(href='/home/#{og_array[i].id}') #{og_array[i].description}
-          br
 
 

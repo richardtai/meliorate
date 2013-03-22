@@ -259,7 +259,7 @@ var add_monthly_goals = function(mg_data, callback) {
             callback(first_month_id);
           }
         }); //overall_goal.addMonthlyGoal
-      }, 1000);
+      }, 2500);
     }); // success
   } // for
 }
@@ -315,10 +315,10 @@ var add_daily_goals = function(dg_data, callback) {
     }).success(function(dg_goal){
       setTimeout(function(){
         weekly_goal.addDailyGoal(dg_goal).success(function(){});
-      }, 1500);
+      }, 500);
     });
   }
   setTimeout(function() {
     callback();
-  }, 2000);
+  }, 2500);
 }
