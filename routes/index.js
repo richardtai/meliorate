@@ -226,7 +226,7 @@ var add_overall_goal = function (og_data, callback) {
     isCompleted: false
   }).success(function(og_goal){
     overall_goal = og_goal;
-    og_array.push(overall_goal);
+    og_array.push(og_goal);
     callback(); 
   });
 }
