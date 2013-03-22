@@ -64,10 +64,10 @@ var dg_test_arr = [];
 
 exports.index = function(req, res) {
   // if user hasn't logged in/signed up
-  if (typeof req.session.email == 'undefined') {
+  /*if (typeof req.session.email == 'undefined') {
     res.render('index', {title: "Meliorate"});
-  } else {
-    user_email = req.session.email;
+  } else { */
+    user_email = 'average_joe@gmail.com';
     // find user via session email and then render the home page
     get_user(user_email, function(curr_user) {
       reset_bool();
