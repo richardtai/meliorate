@@ -50,8 +50,7 @@ OverallGoal.hasMany(MonthlyGoal);
 MonthlyGoal.hasMany(WeeklyGoal);
 WeeklyGoal.hasMany(DailyGoal);
 
-var user, overall_goal, monthly_goal, weekly_goal, mn_bool, og_bool, wg_bool, db_bool, num_months, og_arr, mg_arr, wg_arr, dg_arr,
-    og_home_bool, wg_home_bool, dg_home_bool, first_month_id;
+var user, overall_goal, monthly_goal, weekly_goal, mn_bool, og_bool, wg_bool, db_bool, num_months, first_month_id;
 
 var mg_test_arr = [];
 var wg_test_arr = [];
@@ -77,7 +76,6 @@ exports.index = function(req, res) {
       }
       else if (user.new_user == false) {
         user.getOverallGoals().success(function(og_array){
-          og_arr = og_array;
           res.render('home', {title: "Meliorate", user: curr_user, og_array: og_array});
         });
       }
@@ -89,7 +87,6 @@ exports.home = function(req, res) {
   overall_goal_id = req.params.id;
   find_overall_goal(overall_goal_id, function(og_goal) {
     og_goal.getMonthlyGoals({order:  'id ASC'}).success(function(mg_goal_array) {
-      mg_arr = mg_goal_array;
       res.render('monthly_goal', {title: "Meliorate", user: user, mg_array: mg_goal_array});
     });
   });
@@ -99,7 +96,6 @@ exports.monthly_goal = function(req, res) {
   month_id = req.params.id;
   find_first_monthly_goal(month_id, function(mg_goal) {
     mg_goal.getWeeklyGoals({order:'id ASC'}).success(function(wg_goal_array) {
-      wg_arr = wg_goal_array;
       res.render('weekly_goal', {title: "Meliorate", user:user, wg_array: wg_goal_array});
     });
   });
@@ -109,7 +105,6 @@ exports.weekly_goal = function(req, res) {
   week_id = req.params.id;
   find_first_weekly_goal(week_id, function(wg_goal) {
     wg_goal.getDailyGoals({order: 'id ASC'}).success(function(dg_goal_array) {
-      dg_arr = dg_goal_array;
       res.render('daily_goal', {title: "Meliorate", user: user, dg_array: dg_goal_array});
     });
   });
@@ -176,13 +171,10 @@ exports.post_overall_goal_handler = function(req, res) {
   else if((mn_bool == true) && (og_bool == true) && (wg_bool == false) && (dg_bool == false)) {
     // add the monthly goals the user specified to the database
     add_monthly_goals(req.body, function() {
-      associate_monthly_goals(overall_goal, mg_test_arr, function() {
-        // find the first monthly goal
-        find_first_monthly_goal(first_month_id, function() {
-          // set weekly goal boolean true for the post handler
-          wg_bool = true;
-          res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: first_month_id});
-        });      
+      associate_monthly_goals(mg_test_arr, function() {
+        // set weekly goal boolean true for the post handler
+        wg_bool = true;
+        res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: monthly_goal.id});
       });
     });
   }
@@ -242,7 +234,6 @@ var find_overall_goal = function(og_id, callback) {
 
 // add the monthly goals the user specifies to the database
 var add_monthly_goals = function(mg_data, callback) {
-  console.log(mg_data);
   // set the first month bool to true, when we have the data, we set it to false
   first_month_bool = true;
   // loop through the keys in the data
@@ -264,15 +255,9 @@ var add_monthly_goals = function(mg_data, callback) {
 }
 
 // associates the monthly goals to the overall goal
-var associate_monthly_goals = function(og_test, monthly_array, callback) {
+var associate_monthly_goals = function(monthly_array, callback) {
   bool = true;
-  console.log("--------------------(4)---------------------");
-  console.log("Monthly array length is " + monthly_array.length);
-  console.log("Overall Goal is: " + overall_goal.description);
-  console.log("-----------------------------------------");
-  og_test.setMonthlyGoals(monthly_array).success(function() {
-    console.log("----- associated? (5) ------");
-    first_month_id = monthly_array[0].id;
+  overall_goal.setMonthlyGoals(monthly_array).success(function() {
     monthly_goal = monthly_array[0];
     callback();
   });
