@@ -83,7 +83,7 @@ exports.index = function(req, res) {
 exports.home = function(req, res) {
   overall_goal_id = req.params.id;
   find_overall_goal(overall_goal_id, function(og_goal) {
-    og_goal.getMonthlyGoals({order: 'id ASC'}).success(function(mg_goal_array) {
+    og_goal.getMonthlyGoals({order:  'id ASC'}).success(function(mg_goal_array) {
       mg_arr = mg_goal_array;
       res.render('monthly_goal', {title: "Meliorate", user: user, mg_array: mg_goal_array});
     });
@@ -93,7 +93,7 @@ exports.home = function(req, res) {
 exports.monthly_goal = function(req, res) {
   month_id = req.params.id;
   find_first_monthly_goal(month_id, function(mg_goal) {
-    mg_goal.getWeeklyGoals({order: 'id ASC'}).success(function(wg_goal_array) {
+    mg_goal.getWeeklyGoals({order:'id ASC'}).success(function(wg_goal_array) {
       wg_arr = wg_goal_array;
       res.render('weekly_goal', {title: "Meliorate", user:user, wg_array: wg_goal_array});
     });
