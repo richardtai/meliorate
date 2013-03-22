@@ -247,6 +247,7 @@ var add_monthly_goals = function(mg_data, callback) {
       // upon success, associate it to the overall goal
     }).success(function(mg_goal) {
       setTimeout(function() {
+        console.log("Associated monthly goal to overall goal");
         overall_goal.addMonthlyGoal(mg_goal).success(function() {
           // this is how we find the first month's data
           if (first_month_bool == true) {
