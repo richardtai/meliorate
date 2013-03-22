@@ -44,6 +44,6 @@ app.post('/', routes.post_handler);
 app.post('/login', routes.post_login_handler);
 app.post('/new_overall_goal', routes.post_overall_goal_handler);
 
-http.createServer(app).listen(8080, "54.225.134.239", function(){
+http.createServer(app).listen(8080, function(){
   console.log("Express server listening on port " + app.get('port'));
 });
