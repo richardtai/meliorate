@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize'),
-    sequelize = new Sequelize ('meliorate_db', 'richardtai', null, {
+    sequelize = new Sequelize ('meliorate_db', 'postgres', 'postgres', {
       dialect: 'postgres',
       // When connecting to the database, psql uses 'local socket' as the default
       // method of connecting, while sequelize uses 'host'. Therefore, specify this 
