@@ -67,7 +67,11 @@ exports.index = function(req, res) {
   /*if (typeof req.session.email == 'undefined') {
     res.render('index', {title: "Meliorate"});
   } else { */
-    user_email = 'average_joe@gmail.com';
+    bool = req.params.id;
+    if (bool != 0 ) {
+      res.render('index', {title: "Meliorate"});
+    } else {
+        user_email = 'average_joe@gmail.com';
     // find user via session email and then render the home page
     get_user(user_email, function(curr_user) {
       reset_bool();
@@ -82,7 +86,7 @@ exports.index = function(req, res) {
       }
     });
   }
-};
+}
 
 exports.home = function(req, res) {
   overall_goal_id = req.params.id;

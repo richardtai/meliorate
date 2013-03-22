@@ -33,6 +33,7 @@ app.configure('development', function(){
 });
 
 app.get('/', routes.index);
+app.get('/:id?', routes.index);
 app.get('/users', user.list);
 app.get('/new_overall_goal', routes.new_overall_goal);
 app.get('/home', routes.home);
