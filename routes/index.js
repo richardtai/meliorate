@@ -50,8 +50,9 @@ OverallGoal.hasMany(MonthlyGoal);
 MonthlyGoal.hasMany(WeeklyGoal);
 WeeklyGoal.hasMany(DailyGoal);
 
-var user, overall_goal, monthly_goal, weekly_goal, mn_bool, og_bool, wg_bool, db_bool, num_months, first_month_id;
+var user, overall_goal, monthly_goal, weekly_goal, mn_bool, og_bool, wg_bool, db_bool, num_months;
 
+var og_array = [];
 var mg_test_arr = [];
 var wg_test_arr = [];
 var dg_test_arr = [];
@@ -225,6 +226,7 @@ var add_overall_goal = function (og_data, callback) {
     isCompleted: false
   }).success(function(og_goal){
     overall_goal = og_goal;
+    og_array.push(overall_goal);
     callback(); 
   });
 }
