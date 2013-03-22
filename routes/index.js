@@ -91,19 +91,16 @@ exports.home = function(req, res) {
 }
 
 exports.monthly_goal = function(req, res) {
-  console.log("Monthly goal id: " + req.params.id);
   month_id = req.params.id;
   find_first_monthly_goal(month_id, function(mg_goal) {
     mg_goal.getWeeklyGoals().success(function(wg_goal_array) {
       wg_arr = wg_goal_array;
-      console.log(wg_arr);
       res.render('weekly_goal', {title: "Meliorate", user:user, wg_array: wg_goal_array});
     });
   });
 }
 
 exports.weekly_goal = function(req, res) {
-  console.log("Weekly goal id: " + req.params.id);
   week_id = req.params.id;
   find_first_weekly_goal(week_id, function(wg_goal) {
     wg_goal.getDailyGoals().success(function(dg_goal_array) {
@@ -250,7 +247,7 @@ var add_monthly_goals = function(mg_data, callback) {
       // upon success, associate it to the overall goal
     }).success(function(mg_goal) {
       setTimeout(function() {
-         overall_goal.addMonthlyGoal(mg_goal).success(function() {
+        overall_goal.addMonthlyGoal(mg_goal).success(function() {
           // this is how we find the first month's data
           if (first_month_bool == true) {
             first_month_id = mg_goal.id;
@@ -259,7 +256,7 @@ var add_monthly_goals = function(mg_data, callback) {
             callback(first_month_id);
           }
         }); //overall_goal.addMonthlyGoal
-      }, 2500);
+      }, 500); //set Timeout
     }); // success
   } // for
 }
@@ -282,16 +279,17 @@ var add_weekly_goals = function(wg_data, callback) {
       description: wg_data[key],
       isCompleted: false
     }).success(function(wg_goal){
-      monthly_goal.addWeeklyGoal(wg_goal).success(function() {
-        if(first_week_bool == true) {
-          first_week_id = wg_goal.id;
-          first_week_bool = false;
-          weekly_goal = wg_goal;
-          console.log(wg_goal.description);
-          callback(first_week_id);
-        }
-      });
-    });
+      setTimeout(function() {
+        monthly_goal.addWeeklyGoal(wg_goal).success(function() {
+          if(first_week_bool == true) {
+            first_week_id = wg_goal.id;
+            first_week_bool = false;
+            weekly_goal = wg_goal;
+            callback(first_week_id);
+          }
+        }); //addWeeklyGoal
+      }, 500); //setTimeout
+    }); //success
   }
 }
 
@@ -313,12 +311,12 @@ var add_daily_goals = function(dg_data, callback) {
       description: dg_data[key],
       isCompleted: false
     }).success(function(dg_goal){
-      setTimeout(function(){
+       setTimeout(function(){
         weekly_goal.addDailyGoal(dg_goal).success(function(){});
-      }, 500);
+       }, 500);
     });
   }
   setTimeout(function() {
     callback();
-  }, 2500);
+  }, 1500);
 }
