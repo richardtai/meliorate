@@ -146,16 +146,11 @@ exports.post_overall_goal_handler = function(req, res) {
     //set overall goal to true
     og_bool = true;
     // create the overall goal that the user input 
-    OverallGoal.create({
-      description: req.body.overall_goal_description,
-      isCompleted: false
-      // upon success, add the overall goal to the user
-    }).success(function(og_goal){
-      user.addOverallGoal(og_goal).success(function() {
-        overall_goal = og_goal;
+    add_overall_goal(req.body.overall_goal_description, function() {
+      associate_overall_goal(overall_goal, function() {
         res.render('new_monthly_goal', {title: "Meliorate", months_needed_bool: mn_bool});
-      }); // corresponds to the adding OverallGoal's success function
-    }); // corresopnds to OverallGoal's success function
+      });
+    });
   }
 
   // post handler for determining how many months are needed to achieve the overall goal
@@ -221,6 +216,22 @@ var get_user = function(user_email, callback) {
     if (callback && typeof(callback) === "function") {
       callback(user);
     }
+  });
+}
+
+var add_overall_goal = function (og_data, callback) {
+  OverallGoal.create({
+    description: req.body.overall_goal_description,
+    isCompleted: false
+  }).success(function(og_goal){
+    overall_goal = og_goal;
+    callback(); 
+  });
+}
+
+var associate_overall_goal = function(og, callback) {
+  user.addOverallGoal(og).success(function() {
+    callback();
   });
 }
 
