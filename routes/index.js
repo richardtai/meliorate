@@ -83,7 +83,7 @@ exports.index = function(req, res) {
 exports.home = function(req, res) {
   overall_goal_id = req.params.id;
   find_overall_goal(overall_goal_id, function(og_goal) {
-    og_goal.getMonthlyGoals().success(function(mg_goal_array) {
+    og_goal.getMonthlyGoals({order: 'ascending'}).success(function(mg_goal_array) {
       mg_arr = mg_goal_array;
       res.render('monthly_goal', {title: "Meliorate", user: user, mg_array: mg_goal_array});
     });
@@ -93,7 +93,7 @@ exports.home = function(req, res) {
 exports.monthly_goal = function(req, res) {
   month_id = req.params.id;
   find_first_monthly_goal(month_id, function(mg_goal) {
-    mg_goal.getWeeklyGoals().success(function(wg_goal_array) {
+    mg_goal.getWeeklyGoals({order: 'ascending'}).success(function(wg_goal_array) {
       wg_arr = wg_goal_array;
       res.render('weekly_goal', {title: "Meliorate", user:user, wg_array: wg_goal_array});
     });
@@ -103,7 +103,7 @@ exports.monthly_goal = function(req, res) {
 exports.weekly_goal = function(req, res) {
   week_id = req.params.id;
   find_first_weekly_goal(week_id, function(wg_goal) {
-    wg_goal.getDailyGoals().success(function(dg_goal_array) {
+    wg_goal.getDailyGoals({order: 'ascending'}).success(function(dg_goal_array) {
       dg_arr = dg_goal_array;
       res.render('daily_goal', {title: "Meliorate", user: user, dg_array: dg_goal_array});
     });
