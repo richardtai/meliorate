@@ -176,11 +176,9 @@ exports.post_overall_goal_handler = function(req, res) {
   else if((mn_bool == true) && (og_bool == true) && (wg_bool == false) && (dg_bool == false)) {
     // add the monthly goals the user specified to the database
     add_monthly_goals(req.body, function() {
-      console.log("------ CALLING ASSOCIATE MONTHLY GOALS (3) ------");
       associate_monthly_goals(overall_goal, mg_test_arr, function() {
         // find the first monthly goal
         find_first_monthly_goal(first_month_id, function() {
-          console.log("------ ABOUT TO RENDER NWG (6) -------");
           // set weekly goal boolean true for the post handler
           wg_bool = true;
           res.render('new_weekly_goal', {title: "Meliorate", fmg_goal: first_month_id});
@@ -257,19 +255,15 @@ var add_monthly_goals = function(mg_data, callback) {
       // upon success, associate it to the overall goal
     }).success(function(mg_goal) {
       counter++;
-      console.log("-------------------(1)----------------------");
-      console.log("Added " + mg_goal.description + " to the database.");
       mg_test_arr.push(mg_goal);
-      console.log("Counter vs num_months " + counter + " vs " + num_months);
-      console.log("-----------------------------------------");
       if(counter == num_months) {
-        console.log("----- CALLING BACK (2) ------");
         callback();
       }
     }); // success
   } // for
 }
 
+// associates the monthly goals to the overall goal
 var associate_monthly_goals = function(og_test, monthly_array, callback) {
   bool = true;
   console.log("--------------------(4)---------------------");
@@ -313,6 +307,7 @@ var add_weekly_goals = function(wg_data, callback) {
   }
 }
 
+// associates the weekly goals to the monthly goal
 var associate_weekly_goals = function(weekly_array, callback) {
   monthly_goal.setWeeklyGoals(weekly_array).success(function() {
     weekly_goal = weekly_array[0];
@@ -347,6 +342,7 @@ var add_daily_goals = function(dg_data, callback) {
   }
 }
 
+// associates the daily goals to the respective weekly goal
 var associate_daily_goals = function(daily_array, callback) {
   weekly_goal.setDailyGoals(daily_array).success(function() {
     callback();
